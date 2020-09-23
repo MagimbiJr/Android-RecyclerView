@@ -1,6 +1,7 @@
 package com.tana.recyclerview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+//import static com.tana.recyclerview.MainActivity.CONTACT_INFO;
+
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecyclerAdapter.ContactViewHolder> {
 
-    final Context mContext;
+    public final Context mContext;
     final List<Contact> mContacts;
 
     public ContactRecyclerAdapter(Context context, List<Contact> contacts) {
@@ -37,6 +40,7 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
         holder.mContactName.setText(contactList.getName());
         holder.mPhoneNumber.setText(contactList.getPhone());
         holder.mDpImage.setImageResource(contactList.getPhoto());
+        holder.mCurrentPosition = position;
     }
 
     @Override
@@ -44,17 +48,28 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
         return mContacts.size();
     }
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mDpImage;
-        public TextView mContactName;
-        public TextView mPhoneNumber;
+    public class ContactViewHolder extends RecyclerView.ViewHolder {
+        public final ImageView mDpImage;
+        public final TextView mContactName;
+        public final TextView mPhoneNumber;
+        public int mCurrentPosition;
+
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mDpImage = (ImageView) itemView.findViewById(R.id.dp_img);
-            mContactName = (TextView) itemView.findViewById(R.id.name_contact);
+            mDpImage = (ImageView) itemView.findViewById(R.id.img_dp);
+            mContactName = (TextView) itemView.findViewById(R.id.contact_name);
             mPhoneNumber = (TextView) itemView.findViewById(R.id.phone_contact);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ContactDetailsActivity.class);
+                    intent.putExtra(ContactDetailsActivity.CONTACT_INFO, mCurrentPosition);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

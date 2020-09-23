@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    List<Contact> mContact;
+    public static List<Contact> mContact;
     RecyclerView mContactList;
     LinearLayoutManager mLayoutManager;
     ContactRecyclerAdapter mRecyclerAdapter;
